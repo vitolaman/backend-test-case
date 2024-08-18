@@ -17,7 +17,7 @@ export const defaultDataSource = new DataSource({
   database: 'postgres',
   entities: [`${__dirname}/../**/*.entity.{js,ts}`],
   migrations: [`${__dirname}/migrations/*.{js,ts}`],
-  synchronize: false,
+  synchronize: true,
   migrationsRun: true,
   migrationsTransactionMode: 'each',
   logging: true,
