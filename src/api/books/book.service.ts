@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { FindAllBookResDto } from './dto/find-all-book.res.dto';
@@ -13,8 +13,14 @@ export class BookService {
   ) {}
 
   async create(createBookDto: Partial<Books>): Promise<Books> {
-    const newMember = this.bookRepo.create(createBookDto);
-    return await this.bookRepo.save(newMember);
+    const book = await this.bookRepo.find({
+      where: { code: createBookDto.code },
+    });
+    if (book.length > 0) {
+      throw new ConflictException('Book already exists');
+    }
+    const newBook = this.bookRepo.create(createBookDto);
+    return await this.bookRepo.save(newBook);
   }
 
   async findAllMembers({

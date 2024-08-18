@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Books } from 'src/api/books/entities/books.entity';
-import { Member } from 'src/api/members/entities/member.entity';
+import { Books } from '../../books/entities/books.entity';
+import { Member } from '../../members/entities/member.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'borrowings' })

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { FindAllUserResDto } from './dto/find-all-user.res.dto';
@@ -18,6 +18,12 @@ export class MemberService {
   ) {}
 
   async create(createMemberDto: CreateMemberBodyDto): Promise<Member> {
+    const member = await this.memberRepo.find({
+      where: { code: createMemberDto.code },
+    });
+    if (member.length > 0) {
+      throw new ConflictException('Member already exists');
+    }
     const newMember = this.memberRepo.create(createMemberDto);
     return await this.memberRepo.save(newMember);
   }

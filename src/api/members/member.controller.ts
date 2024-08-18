@@ -4,11 +4,12 @@ import {
   ApiBearerAuth,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { MemberService } from './member.service';
-import { RequestPaginatedQueryDto } from 'src/common/request-paginated.dto';
+import { RequestPaginatedQueryWithSearchDto } from 'src/common/request-paginated.dto';
 import { Member } from './entities/member.entity';
 import { CreateMemberBodyDto } from './dto/create-member.req.dto';
 
@@ -25,6 +26,8 @@ export class MemberController {
     description: 'Member created successfully.',
     type: Member,
   })
+  @ApiConflictResponse({ description: 'Member already exists' })
+  @ApiOperation({ summary: 'Add new member' })
   async create(@Body() createMemberDto: CreateMemberBodyDto): Promise<Member> {
     return this.memberService.create(createMemberDto);
   }
@@ -33,7 +36,8 @@ export class MemberController {
   @ApiCreatedResponse({ description: 'user created' })
   @ApiConflictResponse({ description: 'Email already exist' })
   @ApiBadRequestResponse({ description: 'Request body not match' })
-  findById(@Query() query: RequestPaginatedQueryDto) {
+  @ApiOperation({ summary: 'Find all member' })
+  findById(@Query() query: RequestPaginatedQueryWithSearchDto) {
     return this.memberService.findAllMembers(query);
   }
 }

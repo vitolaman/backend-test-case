@@ -6,7 +6,7 @@ import { MemberService } from './member.service';
 import { Borrowing } from '../borrows/entities/borrow.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Member,Borrowing])],
+  imports: [TypeOrmModule.forFeature([Member, Borrowing])],
   controllers: [MemberController],
   providers: [MemberService],
   exports: [MemberService],

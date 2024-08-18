@@ -6,6 +6,7 @@ import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiForbiddenResponse,
+  ApiOperation,
 } from '@nestjs/swagger';
 import { BorrowService } from './borrow.service';
 import { Borrowing } from './entities/borrow.entity';
@@ -28,6 +29,7 @@ export class BorrowController {
   @ApiForbiddenResponse({
     description: 'Member is currently penalized',
   })
+  @ApiOperation({ summary: 'Borrow book' })
   async borrowBook(
     @Body() @Body() borrowDto: CreateBorrowDto,
   ): Promise<Borrowing> {
@@ -43,6 +45,7 @@ export class BorrowController {
   @ApiNotFoundResponse({
     description: 'Borrowing record not found.',
   })
+  @ApiOperation({ summary: 'Return book' })
   async returnBook(@Param('id') borrowingId: number): Promise<Borrowing> {
     return this.borrowingService.returnBook(borrowingId);
   }
