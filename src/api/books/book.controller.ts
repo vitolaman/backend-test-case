@@ -7,7 +7,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { MemberService } from './book.service';
+import { BookService } from './book.service';
 import { RequestPaginatedQueryDto } from 'src/common/request-paginated.dto';
 import { CreateBookBodyDto } from './dto/create-book.req.dto';
 import { Books } from './entities/books.entity';
@@ -15,8 +15,8 @@ import { Books } from './entities/books.entity';
 @Controller('books')
 @ApiBearerAuth()
 @ApiTags('Book')
-export class MemberController {
-  constructor(private readonly memberService: MemberService) {}
+export class BookController {
+  constructor(private readonly bookService: BookService) {}
 
   @Post()
   @ApiResponse({
@@ -24,8 +24,9 @@ export class MemberController {
     description: 'Books created successfully.',
     type: Books,
   })
+  @ApiBadRequestResponse({ description: 'Bad request' })
   async create(@Body() createMemberDto: CreateBookBodyDto): Promise<Books> {
-    return this.memberService.create(createMemberDto);
+    return this.bookService.create(createMemberDto);
   }
 
   @Get()
@@ -33,6 +34,6 @@ export class MemberController {
   @ApiConflictResponse({ description: 'Email already exist' })
   @ApiBadRequestResponse({ description: 'Request body not match' })
   findById(@Query() query: RequestPaginatedQueryDto) {
-    return this.memberService.findAllUsers(query);
+    return this.bookService.findAllMembers(query);
   }
 }

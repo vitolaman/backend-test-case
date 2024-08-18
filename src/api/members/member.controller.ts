@@ -12,13 +12,14 @@ import { RequestPaginatedQueryDto } from 'src/common/request-paginated.dto';
 import { Member } from './entities/member.entity';
 import { CreateMemberBodyDto } from './dto/create-member.req.dto';
 
-@Controller('users')
+@Controller('members')
 @ApiBearerAuth()
-@ApiTags('User')
+@ApiTags('Member')
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
   @Post()
+  @ApiBadRequestResponse({ description: 'Bad request' })
   @ApiResponse({
     status: 201,
     description: 'Member created successfully.',
@@ -33,6 +34,6 @@ export class MemberController {
   @ApiConflictResponse({ description: 'Email already exist' })
   @ApiBadRequestResponse({ description: 'Request body not match' })
   findById(@Query() query: RequestPaginatedQueryDto) {
-    return this.memberService.findAllUsers(query);
+    return this.memberService.findAllMembers(query);
   }
 }

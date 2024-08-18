@@ -6,7 +6,7 @@ import { Books } from './entities/books.entity';
 import { RequestPaginatedQueryWithSearchDto } from 'src/common/request-paginated.dto';
 
 @Injectable()
-export class MemberService {
+export class BookService {
   constructor(
     @InjectRepository(Books)
     private bookRepo: Repository<Books>,
@@ -17,7 +17,7 @@ export class MemberService {
     return await this.bookRepo.save(newMember);
   }
 
-  async findAllUsers({
+  async findAllMembers({
     limit,
     page,
     search,
@@ -29,7 +29,7 @@ export class MemberService {
       where.push({ code: ILike(`%${search}%`) });
     }
 
-    const [users, total] = await this.bookRepo.findAndCount({
+    const [members, total] = await this.bookRepo.findAndCount({
       where: where.length > 0 ? where : undefined,
       order: {
         code: 'ASC',
@@ -41,7 +41,7 @@ export class MemberService {
     const totalPages = Math.ceil(total / limit);
 
     return new FindAllBookResDto({
-      data: users,
+      data: members,
       meta: {
         page,
         per_page: limit,

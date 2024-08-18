@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { WinstonModule, utilities as WinstonNestUtilities } from 'nest-winston';
 import * as Winston from 'winston';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -22,6 +23,9 @@ async function bootstrap() {
       ],
     }),
   });
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors({ origin: '*' });
 
   const document = SwaggerModule.createDocument(
     app,
